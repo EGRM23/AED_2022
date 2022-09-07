@@ -106,6 +106,31 @@ public:
 		}
 	}
 	
+	R hallar_max_it() {
+		Nodo<R>* temp = head;
+		R max = temp->val;
+		temp = temp->sig;
+		while (temp != nullptr) {
+			if (temp->val > max) {
+				max = temp->val;
+			}
+			temp = temp->sig;
+		}
+		return max;
+	}
+	
+	R hallar_max_rec() {
+		return hallar_max_rec(head->val, head);
+	}
+	
+	R hallar_max_rec(R max, Nodo<R>* temp) {
+		if (temp->sig == nullptr) {
+			return temp->val > max? temp->val : max;
+		} else {
+			return hallar_max_rec(temp->val > max? temp->val : max,temp->sig);
+		}
+	}
+	
 	void insert_it(R valor, int pos) {
 		Nodo<R>* pnew = new Nodo<R>(valor);
 		if (pos == 0) {
@@ -165,13 +190,29 @@ public:
 	
 	void print_reverse_it() {
 		Nodo<R>* temp = head;
-		cout << temp->val;
+		string datos = "";
+		datos += to_string(temp->val) + "\n";
 		temp = temp->sig;
+		
 		while (temp != nullptr) {
-			cout << " - " << temp->val;
+			datos = to_string(temp->val) + " - " + datos;
 			temp = temp->sig;
 		}
+		cout << datos;
+	}
+	
+	void print_reverse_rec() {
+		print_reverse_rec(head);
 		cout << endl;
+	}
+	
+	void print_reverse_rec(Nodo<R>* temp) {
+		if (temp->sig == nullptr) {
+			cout << temp->val;
+		} else {
+			print_reverse_rec(temp->sig);
+			cout << " - " << temp->val;
+		}
 	}
 	
 	
@@ -194,6 +235,10 @@ int main() {
 	lis1->delete_front();
 	lis1->delete_last();
 	lis1->print();
+	lis1->print_reverse_it();
+	lis1->print_reverse_rec();
+	cout << lis1->hallar_max_it() << endl;
+	cout << lis1->hallar_max_rec() << endl;
 	
 	if (lis1->find_it(10)) {
 		cout << "Encontrado\n";
